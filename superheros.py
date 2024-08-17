@@ -14,29 +14,43 @@ round_average_height = round(average_height, 2)
 print("Average Height:", round_average_height)
 
 
-publisher_count = heros['Publisher'].value_counts()
-print("Number of heroes per publisher:\,", publisher_count)
+greater_height = heros.loc[heros['Height'] > 190]
+print("Characters that are taller than 190 cm:")
+print(greater_height)
 
 
 unique_races = heros['Race'].unique()
 print("Unique races:", unique_races)
 
+greater_weight = heros.loc[heros['Weight'] > 190]
+print("Characters that are taller than 190:")
+print(greater_weight)
 
-total_unique_races = heros['Race'].nunique()
-print("Total number of unique races:", total_unique_races)
+heros['Race'] = heros['Race'].replace('-', 'other')
+heros
 
-top_5_races = race_counts.head(5)
+publisher_count = heros['Publisher'].value_counts()
+top_publishers = publisher_count.head(5)
+
+race_counts = heros['Race'].nunique()
+print("Total number of unique races:", race_counts)
+
+top_races = race_counts
 print("The top 5 races:")
-print(top_5_races)
-
-total_race_occurances = race_counts.sum()
-print("The total of all races in comics are:", total_race_occurances)
+print(top_races)
 
 
 counts = heros['Alignment'].value_counts()
 print("Counts of each aligment if the character is either good, bad or neutral:")
 print(counts)
 
+heros['Alignment'] = heros['Alignment'].replace({'-', 'other'})
+
+race_counts_series = pd.Series(race_counts)
+race_counts_race = pd.DataFrame({'Race': race_counts_series})
+
+race_counts = heros['Race'].value_counts()
+top_races = race_counts.head(5)
 
 
 counts = heros['Alignment'].value_counts()
@@ -51,9 +65,9 @@ plt.tight_layout()
 plt.show()
 
 
-top_5_races = race_counts.head(5)
+top_races = race_counts.head(5)
 plt.figure(figsize=(10, 6))
-top_5_races.plot(kind='bar', color='skyblue')
+top_races.plot(kind='bar', color='skyblue')
 plt.title('Top 5 Races by Count')
 plt.xlabel('Race')
 plt.ylabel('Count')
@@ -64,8 +78,6 @@ plt.show()
 
 publisher_count = heros['Publisher'].value_counts()
 top_publishers = publisher_count.head(5)
-
-# Plot the pie chart
 plt.figure(figsize=(8, 8))
 plt.pie(top_publishers, 
         labels=top_publishers.index, 
